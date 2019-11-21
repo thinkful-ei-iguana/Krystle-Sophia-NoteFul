@@ -51,10 +51,21 @@ export default class NotesForm extends React.Component {
                 }),
                 body: noteName,
             })
-            .then(function (response) {
-                return response.json();
-            })
-    }
+            .then(res => {
+                if (!res.ok)
+                  return res.json().then(e => Promise.reject(e))
+                return res.json()
+              })
+              .then((res) => {
+                this.context.addNote(res)
+            
+              })
+
+              .catch(error => {
+                console.error({ error })
+              })
+          }
+        
 
     folderOptions = this.state.folders.map(function(folder){
         return (

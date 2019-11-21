@@ -38,6 +38,10 @@ class App extends Component {
             });
     }
 
+    addNote = response => {
+        this.state.notes.push(response)
+    }
+
     handleDeleteNote = noteId => {
         this.setState({
             notes: this.state.notes.filter(note => note.id !== noteId)
@@ -84,7 +88,8 @@ class App extends Component {
         const value = {
             notes: this.state.notes,
             folders: this.state.folders,
-            deleteNote: this.handleDeleteNote
+            deleteNote: this.handleDeleteNote,
+            addNote: this.addNote
         };
         return (
             <ApiContext.Provider value={value}>
