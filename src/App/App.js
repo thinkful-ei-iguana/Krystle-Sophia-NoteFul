@@ -71,6 +71,8 @@ class App extends Component {
                         component={NoteListMain}
                     />
                 ))}
+                {/* <Route path="/" exact key="/" component={NoteListMain}/>
+                <Route path="/folder/:folderId" exact key="/folder/:folderId" component={NoteListMain}/> */}
                 <Route path="/note/:noteId" component={NotePageMain} />
             </>
         );
