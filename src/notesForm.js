@@ -40,9 +40,9 @@ export default class NotesForm extends React.Component {
         }
     }
 
-    addNote = () => {
+    handleNoteSubmit = () => {
         let noteName = this.state.noteName.value.trim();
-        let noteDescription = this.state.noteDescription.value();
+        //let noteDescription = this.state.noteDescription.value();
         fetch(`${config.API_ENDPOINT}/notes`,
             {
                 method: 'POST',
@@ -56,11 +56,9 @@ export default class NotesForm extends React.Component {
                   return res.json().then(e => Promise.reject(e))
                 return res.json()
               })
-              .then((res) => {
-                this.context.addNote(res)
-            
+              .then((response) => {
+                this.context.addNote(response)
               })
-
               .catch(error => {
                 console.error({ error })
               })
@@ -76,7 +74,7 @@ export default class NotesForm extends React.Component {
 
     render() {
         return (
-            <form>
+            <form onSubmit={() => this.handleNoteSubmit()}>
                 <label htmlFor="note-name">Note Name
                 {this.state.noteName.touched &&
                         <p className="error">{this.validateNoteName()}</p>}

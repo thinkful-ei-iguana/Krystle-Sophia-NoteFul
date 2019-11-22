@@ -1,10 +1,14 @@
 import React from 'react';
 import config from './config'
+import ApiContext from './ApiContext'
 
 export default class FolderForm extends React.Component {
     state = {
-        folderName: { value: '', touched: false}
+        folderName: { value: '', touched: false }
     };
+
+    static contextType = ApiContext;
+
     setFolderName = folderName => {
         this.setState({ folderName: { value: folderName, touched: true } });
     };
@@ -20,28 +24,36 @@ export default class FolderForm extends React.Component {
         }
     }
 
-    addFolder = () => {
+    handleFolderSubmit = () => {
         let folderName = this.state.folderName.value.trim();
+        let jsonObj = {
+            name: folderName
+        }
+        let request = JSON.stringify(jsonObj);
         fetch(`${config.API_ENDPOINT}/folders`,
-        {
-            method: 'POST',
-            headers: new Headers({
-                'Content-Type': 'application/json'
-            }),
-            body: folderName,
-        })
-        .then(function (response) {
-            return response.json();
-        })
+            {
+                method: 'POST',
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                }),
+                body: request,
+            })
+            .then(function (response) {
+                return response.json();
+            })
+            .then((response) => {
+                this.props.history.push('/');
+                this.context.addFolder(response)
+            })
     }
 
 
     render() {
         return (
-            <form>
+            <form onSubmit={() => this.handleFolderSubmit()}>
                 <label htmlFor="folder-name">Add Folder
                 {this.state.folderName.touched &&
-                <p className="error">{this.validateFolderName()}</p>}
+                        <p className="error">{this.validateFolderName()}</p>}
                 </label>
                 <input id="folder-name" type="text" value={this.state.folderName.value}
                     onChange={e => this.setFolderName(e.target.value)} />

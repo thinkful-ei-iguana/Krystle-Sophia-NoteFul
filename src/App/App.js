@@ -10,6 +10,7 @@ import config from '../config';
 import './App.css';
 import FolderForm from '../folderForm'
 import NotesForm from '../notesForm'
+import ErrorBoundary from '../errorBoundary'
 
 class App extends Component {
     state = {
@@ -39,7 +40,15 @@ class App extends Component {
     }
 
     addNote = response => {
-        this.state.notes.push(response)
+        this.setState({
+            notes: this.state.notes.push(response)
+        });
+    }
+
+    addFolder = response => {
+        this.setState({
+            folders: this.state.folders.push(response)
+        });
     }
 
     handleDeleteNote = noteId => {
@@ -47,6 +56,12 @@ class App extends Component {
             notes: this.state.notes.filter(note => note.id !== noteId)
         });
     };
+
+    handleDeleteFolder = folderId => {
+        this.setState({
+            folders: this.state.folders.filter(folder => folder.id !== folderId)
+        });
+    }
 
     renderNavRoutes() {
         return (
@@ -89,10 +104,13 @@ class App extends Component {
             notes: this.state.notes,
             folders: this.state.folders,
             deleteNote: this.handleDeleteNote,
-            addNote: this.addNote
+            addNote: this.addNote,
+            addFolder: this.addFolder,
+            deleteFolder: this.handleDeleteFolder
         };
         return (
             <ApiContext.Provider value={value}>
+                <ErrorBoundary>
                 <div className="App">
                     <nav className="App__nav">{this.renderNavRoutes()}</nav>
                     <header className="App__header">
@@ -103,6 +121,7 @@ class App extends Component {
                     </header>
                     <main className="App__main">{this.renderMainRoutes()}</main>
                 </div>
+                </ErrorBoundary>
             </ApiContext.Provider>
         );
     }

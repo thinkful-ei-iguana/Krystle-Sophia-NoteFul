@@ -5,9 +5,31 @@ import CircleButton from '../CircleButton/CircleButton'
 import ApiContext from '../ApiContext'
 import { countNotesForFolder } from '../notes-helpers'
 import './NoteListNav.css'
+import config from '../config'
 
 export default class NoteListNav extends React.Component {
+
   static contextType = ApiContext;
+
+  handleClickDelete = (folderId) => {
+    fetch(`${config.API_ENDPOINT}/folders/${folderId}`, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json'
+      },
+    })
+      .then(res => {
+        if (!res.ok)
+          return res.json().then(e => Promise.reject(e))
+        return res.json()
+      })
+      .then(() => {
+        this.context.deleteFolder(folderId);
+      })
+      .catch(error => {
+        console.error({ error })
+      })
+  }
 
   render() {
     const { folders=[], notes=[] } = this.context
@@ -25,6 +47,15 @@ export default class NoteListNav extends React.Component {
                 </span>
                 {folder.name}
               </NavLink>
+              <button
+                  className='Note__delete'
+                  type='button'
+                  onClick={() => this.handleClickDelete(folder.id)}
+                >
+                  <FontAwesomeIcon icon='trash-alt' />
+                  {' '}
+                  remove
+              </button>
             </li>
           )}
         </ul>
