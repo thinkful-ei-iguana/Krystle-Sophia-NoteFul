@@ -8,7 +8,8 @@ export default class NotesForm extends React.Component {
     state = {
         noteName: { value: '', touched: false },
         noteDescription: { value: '', touched: false },
-        folders: this.context.folders
+        folders: this.context.folders,
+        selectValue: { value: '', touched: false }
     };
 
     setNoteName = noteName => {
@@ -18,6 +19,10 @@ export default class NotesForm extends React.Component {
     setNoteDescription = noteDescription => {
         this.setState({ noteDescription: { value: noteDescription, touched: true } });
     };
+
+    setSelectedValue = selectValue => {
+        this.setState({ selectValue: { value: selectValue, touched: true}});
+    }
 
 
     validateNoteName = () => {
@@ -42,37 +47,56 @@ export default class NotesForm extends React.Component {
 
     handleNoteSubmit = () => {
         let noteName = this.state.noteName.value.trim();
-        //let noteDescription = this.state.noteDescription.value();
+        let noteDescription = this.state.noteDescription.value;
+        let selectValue =  this.state.selectValue.value; //1, 2
+        let numSelectValueId = Number(selectValue);
+
+        var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
+        let jsonObj = {
+            name: noteName,
+            content: noteDescription,
+            folderId: numSelectValueId,
+            modified: date
+        }
+
+        let request = JSON.stringify(jsonObj)
         fetch(`${config.API_ENDPOINT}/notes`,
             {
                 method: 'POST',
                 headers: new Headers({
                     'Content-Type': 'application/json'
                 }),
-                body: noteName,
+                body: request,
             })
-            .then(res => {
-                if (!res.ok)
-                  return res.json().then(e => Promise.reject(e))
-                return res.json()
-              })
-              .then((response) => {
+            .then(function (response) {
+                return response.json();
+            })
+            .then((response) => {
+                console.log(response)
                 this.context.addNote(response)
-              })
-              .catch(error => {
+            })
+            .catch(error => {
                 console.error({ error })
-              })
-          }
-        
+            })
+    }
 
-    folderOptions = this.state.folders.map(function(folder){
-        return (
-            <option value="{folder.name}">{folder.name}</option>
-        )
-    })
+
+    getFolderOptions = () => {
+        console.log()
+        const folders = this.state.folders.map(function (folder) {
+            return (
+                <option value={folder.id}>{folder.name}</option>
+            )
+        })
+        return folders;
+    }
+
 
 
     render() {
+        const folderOptions = this.getFolderOptions();
         return (
             <form onSubmit={() => this.handleNoteSubmit()}>
                 <label htmlFor="note-name">Note Name
@@ -88,9 +112,12 @@ export default class NotesForm extends React.Component {
                 </label>
                 <input id="note-description" type="text" value={this.state.noteDescription.value}
                     onChange={e => this.setNoteDescription(e.target.value)} />
-                <select name="folders" id="folder-select">
+                <select name="folders" id="folder-select" 
+                value={this.state.selectValue}
+                onChange={e => this.setSelectedValue(e.target.value)}
+                >
                     <option value="">Choose a Folder</option>
-                    {this.folderOptions}
+                    {folderOptions}
                 </select>
                 <button disabled={
                     this.validateNoteName() ||

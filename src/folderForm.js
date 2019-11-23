@@ -42,9 +42,11 @@ export default class FolderForm extends React.Component {
                 return response.json();
             })
             .then((response) => {
-                this.props.history.push('/');
                 this.context.addFolder(response)
             })
+            .catch(error => {
+                console.error({ error })
+              })
     }
 
 
