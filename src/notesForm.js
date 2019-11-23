@@ -21,7 +21,7 @@ export default class NotesForm extends React.Component {
     };
 
     setSelectedValue = selectValue => {
-        this.setState({ selectValue: { value: selectValue, touched: true}});
+        this.setState({ selectValue: { value: selectValue, touched: true } });
     }
 
 
@@ -48,11 +48,11 @@ export default class NotesForm extends React.Component {
     handleNoteSubmit = () => {
         let noteName = this.state.noteName.value.trim();
         let noteDescription = this.state.noteDescription.value;
-        let selectValue =  this.state.selectValue.value; //1, 2
+        let selectValue = this.state.selectValue.value; //1, 2
         let numSelectValueId = Number(selectValue);
 
         var today = new Date();
-        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
         let jsonObj = {
             name: noteName,
@@ -84,11 +84,21 @@ export default class NotesForm extends React.Component {
 
 
     getFolderOptions = () => {
-        console.log()
+            let selectValue = this.state.selectValue.value; //1, 2
+            let numSelectValueId = Number(selectValue);
+
         const folders = this.state.folders.map(function (folder) {
-            return (
-                <option value={folder.id}>{folder.name}</option>
-            )
+
+            if (folder.id === numSelectValueId) {
+                return (
+                    <option value={folder.id} selected>{folder.name}</option>
+                )
+            } else {
+                return (
+                    <option value={folder.id}>{folder.name}</option>
+                )
+            }
+
         })
         return folders;
     }
@@ -112,9 +122,9 @@ export default class NotesForm extends React.Component {
                 </label>
                 <input id="note-description" type="text" value={this.state.noteDescription.value}
                     onChange={e => this.setNoteDescription(e.target.value)} />
-                <select name="folders" id="folder-select" 
-                value={this.state.selectValue}
-                onChange={e => this.setSelectedValue(e.target.value)}
+                <select name="folders" id="folder-select"
+                    value={this.state.selectValue}
+                    onChange={e => this.setSelectedValue(e.target.value)}
                 >
                     <option value="">Choose a Folder</option>
                     {folderOptions}
