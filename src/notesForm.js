@@ -49,7 +49,6 @@ export default class NotesForm extends React.Component {
         let noteName = this.state.noteName.value.trim();
         let noteDescription = this.state.noteDescription.value;
         let selectValue = this.state.selectValue.value; //1, 2
-        let numSelectValueId = Number(selectValue);
 
         var today = new Date();
         var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -57,7 +56,7 @@ export default class NotesForm extends React.Component {
         let jsonObj = {
             name: noteName,
             content: noteDescription,
-            folderId: numSelectValueId,
+            folderId: selectValue,
             modified: date
         }
 
@@ -84,21 +83,17 @@ export default class NotesForm extends React.Component {
 
 
     getFolderOptions = () => {
-            let selectValue = this.state.selectValue.value; //1, 2
-            let numSelectValueId = Number(selectValue);
-
-        const folders = this.state.folders.map(function (folder) {
-
-            if (folder.id === numSelectValueId) {
+        let selectValue = this.state.selectValue.value; //1, 2
+        const folders = this.context.folders.map(function (folder) {
+            if (folder.id === selectValue) {
                 return (
-                    <option value={folder.id} selected>{folder.name}</option>
+                    <option key={folder.id} value={folder.id} selected>{folder.name}</option>
                 )
             } else {
                 return (
-                    <option value={folder.id}>{folder.name}</option>
+                    <option key={folder.id} value={folder.id}>{folder.name}</option>
                 )
             }
-
         })
         return folders;
     }
@@ -122,8 +117,7 @@ export default class NotesForm extends React.Component {
                 </label>
                 <input id="note-description" type="text" value={this.state.noteDescription.value}
                     onChange={e => this.setNoteDescription(e.target.value)} />
-                <select name="folders" id="folder-select"
-                    value={this.state.selectValue}
+                <select name="folders" id="folder-select" value={this.state.selectValue.value}
                     onChange={e => this.setSelectedValue(e.target.value)}
                 >
                     <option value="">Choose a Folder</option>

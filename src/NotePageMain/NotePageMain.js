@@ -11,9 +11,7 @@ export default class NotePageMain extends React.Component {
       params: {}
     }
   }
-  static contextType = ApiContext
-
-  
+  static contextType = ApiContext  
 
   handleDeleteNote = noteId => {
     this.props.history.push(`/`)
@@ -22,8 +20,7 @@ export default class NotePageMain extends React.Component {
   render() {
     const { notes=[] } = this.context
     const { noteId } = this.props.match.params
-    const numNoteId = Number(noteId)
-    const note = findNote(notes, numNoteId) || { content: '' }
+    const note = findNote(notes, noteId) || { content: '' }
     return (
       <section className='NotePageMain'>
         <Note
@@ -44,5 +41,5 @@ export default class NotePageMain extends React.Component {
 
 NotePageMain.propTypes = {
   params: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.array.isRequired
 };

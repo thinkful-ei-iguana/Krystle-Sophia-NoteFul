@@ -1,7 +1,6 @@
 import React from 'react';
 import config from './config'
 import ApiContext from './ApiContext'
-import PropTypes from 'prop-types';
 
 export default class FolderForm extends React.Component {
     state = {
