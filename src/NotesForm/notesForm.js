@@ -1,6 +1,7 @@
 import React from 'react';
-import config from './config'
-import ApiContext from './ApiContext'
+import config from '../config'
+import ApiContext from '../ApiContext'
+import '../NotesForm/notesForm.css'
 
 export default class NotesForm extends React.Component {
     static contextType = ApiContext;
@@ -42,6 +43,13 @@ export default class NotesForm extends React.Component {
         }
         else if (noteDescription.length < 6 || noteDescription.length > 72) {
             return 'Note Description must between 6 and 72 characters long'
+        }
+    }
+
+    validateSelectedValue = () => {
+        let selectValue = this.state.selectValue.value;
+        if(selectValue === ""){
+            return "Folder must be Selected"
         }
     }
 
@@ -103,7 +111,7 @@ export default class NotesForm extends React.Component {
     render() {
         const folderOptions = this.getFolderOptions();
         return (
-            <form onSubmit={() => this.handleNoteSubmit()}>
+            <form className="notes-form" onSubmit={() => this.handleNoteSubmit()}>
                 <label htmlFor="note-name">Note Name
                 {this.state.noteName.touched &&
                         <p className="error">{this.validateNoteName()}</p>}
@@ -117,15 +125,20 @@ export default class NotesForm extends React.Component {
                 </label>
                 <input id="note-description" type="text" value={this.state.noteDescription.value}
                     onChange={e => this.setNoteDescription(e.target.value)} />
+                    <label htmlFor="folder-select">Choose a Folder
+                {this.state.selectValue.touched &&
+                        <p className="error">{this.validateSelectedValue()}</p>}
+                </label>
                 <select name="folders" id="folder-select" value={this.state.selectValue.value}
                     onChange={e => this.setSelectedValue(e.target.value)}
                 >
-                    <option value="">Choose a Folder</option>
+                    <option value="">-----</option>
                     {folderOptions}
                 </select>
                 <button disabled={
                     this.validateNoteName() ||
-                    this.validateNoteDescription()
+                    this.validateNoteDescription() ||
+                    this.validateSelectedValue()
                 }>Submit Note</button>
             </form>
         )

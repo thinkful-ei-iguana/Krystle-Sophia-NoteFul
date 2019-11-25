@@ -45,6 +45,9 @@ export default class NotePageNav extends React.Component {
 }
 
 NotePageNav.propTypes = {
-  params: PropTypes.object.isRequired,
-  history: PropTypes.func.isRequired
+  params: PropTypes.object,
+  history:  PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.func,
+  ])
 };

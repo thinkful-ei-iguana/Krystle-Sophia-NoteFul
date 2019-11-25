@@ -8,9 +8,9 @@ import NotePageMain from '../NotePageMain/NotePageMain';
 import ApiContext from '../ApiContext';
 import config from '../config';
 import './App.css';
-import FolderForm from '../folderForm'
-import NotesForm from '../notesForm'
-import ErrorBoundary from '../errorBoundary'
+import FolderForm from '../FolderForm/folderForm';
+import NotesForm from '../NotesForm/notesForm';
+import ErrorBoundary from '../ErrorBoundary/errorBoundary'
 
 class App extends Component {
     state = {
@@ -75,8 +75,8 @@ class App extends Component {
                     />
                 ))}
                 <Route path="/note/:noteId" component={NotePageNav} />
-                <Route path="/add-folder" component={FolderForm} />
-                <Route path="/add-note" component={NotesForm} />
+                <Route path="/add-note" component={NotePageNav} />
+                <Route path="/add-folder" component={NotePageNav} />
             </>
         );
     }
@@ -95,6 +95,8 @@ class App extends Component {
                 {/* <Route path="/" exact key="/" component={NoteListMain}/>
                 <Route path="/folder/:folderId" exact key="/folder/:folderId" component={NoteListMain}/> */}
                 <Route path="/note/:noteId" component={NotePageMain} />
+                <Route path="/add-note" component={NotesForm} />
+                <Route path="/add-folder" component={FolderForm} />
             </>
         );
     }

@@ -1,6 +1,7 @@
 import React from 'react';
-import config from './config'
-import ApiContext from './ApiContext'
+import config from '../config'
+import ApiContext from '../ApiContext'
+import './folderForm.css'
 
 export default class FolderForm extends React.Component {
     state = {
@@ -52,7 +53,7 @@ export default class FolderForm extends React.Component {
 
     render() {
         return (
-            <form onSubmit={() => this.handleFolderSubmit()}>
+            <form className="folder-form" onSubmit={() => this.handleFolderSubmit()}>
                 <label htmlFor="folder-name">Add Folder
                 {this.state.folderName.touched &&
                         <p className="error">{this.validateFolderName()}</p>}
