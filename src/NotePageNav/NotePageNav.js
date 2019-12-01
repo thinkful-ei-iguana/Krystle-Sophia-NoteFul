@@ -18,7 +18,7 @@ export default class NotePageNav extends React.Component {
   static contextType = ApiContext;
 
   render() {
-    const { notes, folders, } = this.context
+    const { notes, folders } = this.context
     const { noteId } = this.props.match.params
     const note = findNote(notes, noteId) || {}
     const folder = findFolder(folders, note.folderId)
@@ -30,9 +30,11 @@ export default class NotePageNav extends React.Component {
           onClick={() => this.props.history.goBack()}
           className='NotePageNav__back-button'
         >
-          <FontAwesomeIcon icon='chevron-left' />
-          <br />
-          Back
+          <>
+            <FontAwesomeIcon icon='chevron-left' />
+            <br />
+            Back
+          </>
         </CircleButton>
         {folder && (
           <h3 className='NotePageNav__folder-name'>
@@ -46,7 +48,7 @@ export default class NotePageNav extends React.Component {
 
 NotePageNav.propTypes = {
   params: PropTypes.object,
-  history:  PropTypes.oneOfType([
+  history: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.func,
   ])

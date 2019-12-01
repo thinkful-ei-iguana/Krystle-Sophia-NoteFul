@@ -4,30 +4,55 @@ import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
 export default function NavCircleButton(props) {
-  const { tag, className, children, ...otherProps } = props
+  const { tag, type, to, role, className, onClick, children } = props
 
-  return React.createElement(
-    props.tag,
-    {
-      className: ['NavCircleButton', props.className].join(' '),
-      ...otherProps
-    },
-    props.children
+  const CustomElementName = tag === 'link' ? Link : tag;
+  const renderCustomElement = () => {
+
+    // render element as a Link
+    if (type && to) {
+      return (
+        <div className="CircleButtonLink">
+          <CustomElementName className={'NavCircleButton ' + className}
+            type={type}
+            to={to}
+          >
+            {children}
+          </CustomElementName>
+        </div>
+      )
+    }
+    
+    // render element as a button
+    if (onClick && role){
+      return (
+        <div className="CircleButton">
+          <CustomElementName className={'NavCircleButton ' + className}
+            onClick={onClick}
+            role={role}
+          >
+            {children}
+          </CustomElementName>
+        </div>
+      )
+    }
+  }
+
+  return (
+    renderCustomElement()
   )
 }
 
 NavCircleButton.defaultProps ={
-  tag: 'a',
+  tag: 'button',
 }
 
 NavCircleButton.propTypes = {
-  tag: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.func,
-    PropTypes.element,
-    PropTypes.array,
-    PropTypes.instanceOf(Link)
-  ]),
+  tag: PropTypes.string.isRequired,
   className: PropTypes.string.isRequired,
-  children: PropTypes.element.isRequired
+  children: PropTypes.element.isRequired,
+  type: PropTypes.string,
+  to: PropTypes.string,
+  role: PropTypes.string,
+  onClick: PropTypes.func
 };

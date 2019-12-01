@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import CircleButton from '../CircleButton/CircleButton'
 import ApiContext from '../ApiContext'
@@ -32,7 +32,7 @@ export default class NoteListNav extends React.Component {
   }
 
   render() {
-    const { folders=[], notes=[] } = this.context
+    const { folders = [], notes = [] } = this.context
     return (
       <div className='NoteListNav'>
         <ul className='NoteListNav__list'>
@@ -48,27 +48,29 @@ export default class NoteListNav extends React.Component {
                 {folder.name}
               </NavLink>
               <button
-                  className='Note__delete'
-                  type='button'
-                  onClick={() => this.handleClickDelete(folder.id)}
-                >
-                  <FontAwesomeIcon icon='trash-alt' />
-                  {' '}
-                  remove
+                className='Note__delete'
+                type='button'
+                onClick={() => this.handleClickDelete(folder.id)}
+              >
+                <FontAwesomeIcon icon='trash-alt' />
+                {' '}
+                remove
               </button>
             </li>
           )}
         </ul>
         <div className='NoteListNav__button-wrapper'>
           <CircleButton
-            tag={Link}
+            tag='link'
             to='/add-folder'
             type='button'
             className='NoteListNav__add-folder-button'
           >
-            <FontAwesomeIcon icon='plus' />
-            <br />
-            Folder
+            <>
+              <FontAwesomeIcon icon='plus' />
+              <br />
+              Folder
+            </>
           </CircleButton>
         </div>
       </div>

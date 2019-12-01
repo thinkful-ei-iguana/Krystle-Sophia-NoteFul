@@ -47,7 +47,7 @@ export default class FolderForm extends React.Component {
             })
             .catch(error => {
                 console.error({ error })
-              })
+            })
     }
 
 

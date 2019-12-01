@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Note from '../Note/Note'
 import CircleButton from '../CircleButton/CircleButton'
@@ -18,7 +17,7 @@ export default class NoteListMain extends React.Component {
 
   render() {
     const { folderId } = this.props.match.params
-    const { notes=[] } = this.context
+    const { notes = [] } = this.context
     const notesForFolder = getNotesForFolder(notes, folderId)
     return (
       <section className='NoteListMain'>
@@ -35,14 +34,16 @@ export default class NoteListMain extends React.Component {
         </ul>
         <div className='NoteListMain__button-container'>
           <CircleButton
-            tag={Link}
+            tag='link'
             to='/add-note'
             type='button'
             className='NoteListMain__add-note-button'
           >
-            <FontAwesomeIcon icon='plus' />
-            <br />
-            Note
+            <>
+              <FontAwesomeIcon icon='plus' />
+              <br />
+              Note
+            </>
           </CircleButton>
         </div>
       </section>

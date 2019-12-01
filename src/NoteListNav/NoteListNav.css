@@ -5,6 +5,20 @@
   padding: 0;
 }
 
+.NoteListNav__list li {
+  display: inline-flex;
+  width: 100%;
+}
+
+.NoteListNav__list a {
+  width: 100%;
+}
+
+.NoteListNav__list li button {
+  max-width: 40px;
+  top: -26px;
+}
+
 .NoteListNav__button-wrapper {
   margin: 0 0 0 auto;
   max-width: 180px;
